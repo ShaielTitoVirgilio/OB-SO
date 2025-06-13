@@ -8,91 +8,125 @@ sem_t sM1_M2, sF1_FN, sF1_TD, sQG_TD, sQG_MIN, sM2_RR, sM2_FN, sM2_MF, sFN_RR, s
 
 void* M1 (void* arg) {
     sem_post(&sM1_M2);
+    return NULL;
 }
 
 void* IN (void* arg) {
-    // Implementation of M2
+    sem_wait(&sFN_IN);
+    sem_wait(&sPR_IN);
+    pthread_exit(NULL);
     return NULL;
 }
+
 
 void* F1 (void* arg) {
     //
-    sem_post(sF1_FN);
-    sem_post(sF1_TD);
+    sem_post(&sF1_FN);
+    sem_post(&sF1_TD);
+    return NULL;
 }
 
 void* QG (void* arg) {
-
+    sem_pos(&sQG_TD);
+    sem_pos(&sQG_MIN);
+    pthread_exit(NULL);
+    return NULL;
 }
 
+
 void* TD (void* arg) {
-    sem_wait(sF1_TD);
-    sem_wait(sQG_TD);
+    sem_wait(&sF1_TD);
+    sem_wait(&sQG_TD);
     //
-    sem_post(sTD_MF);
+    sem_post(&sTD_MF);
+    return NULL;
 }
 
 void* M2 (void* arg) {
-    // Implementation of M2
+    sem_wait(&sM1_M2);
+    sem_pos(&sM2_RR);
+    sem_pos(&sM2_FN);
+    sem_pos(&sM2_MF);
+    pthread_exit(NULL);
     return NULL;
 }
 
-void* FN (void* arg) {
-    sem_wait(sM2_FN);
-    sem_wait(sF1_FN);
-    //
-    sem_post(sFN_RR);
-    sem_post(sFN_IN);
-    sem_post(sFN_PR);
-    sem_post(sFN_MIN);
 
+void* FN (void* arg) {
+    sem_wait(&sM2_FN);
+    sem_wait(&sF1_FN);
+    //
+    sem_post(&sFN_RR);
+    sem_post(&sFN_IN);
+    sem_post(&sFN_PR);
+    sem_post(&sFN_MIN);
+    return NULL;
 }
 
 void* MF (void* arg) {
-    // Implementation of M3
+    sem_wait(&sM2_MF);
+    sem_wait(&sTD_MF);
+    sem_pos(&sMF_SR);
+    pthread_exit(NULL);
     return NULL;
 }
 
-void* MIN (void* arg) {
-    sem_wait(sQG_MIN);
-    sem_wait(sFN_MIN);
-    //
-    sem_post(sMIN_PR);
-    sem_post(sMIN_CB);
-}
 
+void* MIN (void* arg) {
+    sem_wait(&sQG_MIN);
+    sem_wait(&sFN_MIN);
+    //
+    sem_post(&sMIN_PR);
+    sem_post(&sMIN_CB);
+    return NULL
+}
 void* RR (void* arg) {
-    // Implementation of M3
+    sem_wait(&sM2_RR);
+    sem_wait(&sFN_RR);
+    sem_pos(&sRR_SR);
+    pthread_exit(NULL);
     return NULL;
 }
 
 void* PR (void* arg) {
-    sem_wait(sFN_PR);
-    sem_wait(sMIN_PR);
+    sem_wait(&sFN_PR);
+    sem_wait(&sMIN_PR);
     //
-    sem_post(sPR_CB);
-    sem_post(sPR_IN);
-    sem_post(sPR_SN);
+    sem_post(&sPR_CB);
+    sem_post(&sPR_IN);
+    sem_post(&sPR_SN);
+
+    return NULL
 }
 
 void* SR (void* arg) {
-    // Implementation of M3
+    sem_wait(&sRR_SR);
+    sem_wait(&sMF_SR);
+    sem_pos(&sSR_SN);
+    pthread_exit(NULL);
     return NULL;
 }
 
+
 void* IIN (void* arg) {
     //NADA
+    return NULL;
 }
 
 void* CB (void* arg) {
-    // Implementation of M3
+    sem_wait(&sMIN_CB);
+    sem_wait(&sPR_CB);
+    pthread_exit(NULL);
     return NULL;
 }
 
 void* SN (void* arg) {
-    // Implementation of M3
+    sem_wait(&sSR_SN);
+    sem_pos(&sPR_SN);
+    pthread_exit(NULL);
     return NULL;
 }
+
 
 int main() {
     // Initialize semaphores
