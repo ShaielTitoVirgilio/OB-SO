@@ -7,8 +7,7 @@
 sem_t sM1_M2, sF1_FN, sF1_TD, sQG_TD, sQG_MIN, sM2_RR, sM2_FN, sM2_MF, sFN_RR, sFN_IN, sFN_PR, sFN_MIN, sRR_SR, sTD_MF, sMIN_PR, sMIN_CB, sPR_CB, sPR_IN, sPR_SN, sMF_SR, sSR_SN;
 
 void* M1 (void* arg) {
-    // Implementation of M1
-    return NULL;
+    sem_post(&sM1_M2);
 }
 
 void* IN (void* arg) {
@@ -17,18 +16,20 @@ void* IN (void* arg) {
 }
 
 void* F1 (void* arg) {
-    // Implementation of M2
-    return NULL;
+    //
+    sem_post(sF1_FN);
+    sem_post(sF1_TD);
 }
 
 void* QG (void* arg) {
-    // Implementation of M2
-    return NULL;
+
 }
 
 void* TD (void* arg) {
-    // Implementation of M2
-    return NULL;
+    sem_wait(sF1_TD);
+    sem_wait(sQG_TD);
+    //
+    sem_post(sTD_MF);
 }
 
 void* M2 (void* arg) {
@@ -37,8 +38,14 @@ void* M2 (void* arg) {
 }
 
 void* FN (void* arg) {
-    // Implementation of M3
-    return NULL;
+    sem_wait(sM2_FN);
+    sem_wait(sF1_FN);
+    //
+    sem_post(sFN_RR);
+    sem_post(sFN_IN);
+    sem_post(sFN_PR);
+    sem_post(sFN_MIN);
+
 }
 
 void* MF (void* arg) {
@@ -47,8 +54,11 @@ void* MF (void* arg) {
 }
 
 void* MIN (void* arg) {
-    // Implementation of M3
-    return NULL;
+    sem_wait(sQG_MIN);
+    sem_wait(sFN_MIN);
+    //
+    sem_post(sMIN_PR);
+    sem_post(sMIN_CB);
 }
 
 void* RR (void* arg) {
@@ -57,8 +67,12 @@ void* RR (void* arg) {
 }
 
 void* PR (void* arg) {
-    // Implementation of M3
-    return NULL;
+    sem_wait(sFN_PR);
+    sem_wait(sMIN_PR);
+    //
+    sem_post(sPR_CB);
+    sem_post(sPR_IN);
+    sem_post(sPR_SN);
 }
 
 void* SR (void* arg) {
@@ -66,9 +80,8 @@ void* SR (void* arg) {
     return NULL;
 }
 
-void* INU (void* arg) {
-    // Implementation of M3
-    return NULL;
+void* IIN (void* arg) {
+    //NADA
 }
 
 void* CB (void* arg) {
