@@ -167,7 +167,7 @@ int main() {
     sem_init(&sMF_SR, 0, 0);
     sem_init(&sSR_SN, 0, 1); // Initial value for SR_SN is set to allow SN to run first
 
-    pthread_t  tM1, tIN, tF1, tQG, tTD, tM2, tFN, tMF, tMIN, tRR, tPR, tSR, tINU, tCB, tSN;
+    pthread_t  tM1, tIN, tF1, tQG, tTD, tM2, tFN, tMF, tMIN, tRR, tPR, tSR, tIIN, tCB, tSN;
     pthread_attr_t attr;//Declara una variable llamada attr de tipo pthread_attr_t, que representa los atributos de un hilo en la biblioteca pthread. Esta estructura permite configurar ciertas características de los hilos, como si serán desvinculados (detached) o no, el tamaño de su pila de ejecución, entre otras.
     pthread_attr_init(&attr);//Esta función inicializa attr con valores por defecto. Los valores predeterminados son: 1-Los hilos estarán en estado no-desvinculado, lo cual significa que podrás usar pthread_join() para esperar a que el hilo termine. 2- Se usa el tamaño de pila por defecto del sistem
 
@@ -183,7 +183,7 @@ int main() {
     pthread_create(&tRR, &attr, RR, NULL);  
     pthread_create(&tPR, &attr, PR, NULL);
     pthread_create(&tSR, &attr, SR, NULL);
-    pthread_create(&tINU, &attr, INU, NULL);
+    pthread_create(&tIIN, &attr, IIN, NULL);
     pthread_create(&tCB, &attr, CB, NULL);
     pthread_create(&tSN, &attr, SN, NULL);
 
@@ -199,7 +199,7 @@ int main() {
     pthread_join(tRR, NULL);
     pthread_join(tPR, NULL);
     pthread_join(tSR, NULL);
-    pthread_join(tINU, NULL);
+    pthread_join(tIIN, NULL);
     pthread_join(tCB, NULL);
     pthread_join(tSN, NULL);
     
