@@ -31,8 +31,8 @@ void* F1 (void* arg) {
 
 void* QG (void* arg) {
      printf("Materia: Quimica General\nCantidad previas: 0\nMaterias previas: \n---------------------------------------------------------------------------------------\n");
-    sem_pos(&sQG_TD);
-    sem_pos(&sQG_MIN);
+    sem_post(&sQG_TD);
+    sem_post(&sQG_MIN);
     pthread_exit(NULL);
     return NULL;
 }
@@ -50,9 +50,9 @@ void* TD (void* arg) {
 void* M2 (void* arg) {
      printf("Materia: Matematicas 2\nCantidad previas: 1\nMaterias previas: Matematicas 1\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sM1_M2);
-    sem_pos(&sM2_RR);
-    sem_pos(&sM2_FN);
-    sem_pos(&sM2_MF);
+    sem_post(&sM2_RR);
+    sem_post(&sM2_FN);
+    sem_post(&sM2_MF);
     pthread_exit(NULL);
     return NULL;
 }
@@ -93,7 +93,7 @@ void* RR (void* arg) {
     printf("Materia: Reactividad de Reactores\nCantidad previas: 2\nMaterias previas: Matematicas 2, Fisica Nuclear\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sM2_RR);
     sem_wait(&sFN_RR);
-    sem_pos(&sRR_SR);
+    sem_post(&sRR_SR);
     pthread_exit(NULL);
     return NULL;
 }
@@ -114,7 +114,7 @@ void* SR (void* arg) {
     printf("Materia: Sistemas de Reactores\nCantidad previas: 2\nMaterias previas: Mecanica de fluidos, Reactividad de Reactores\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sRR_SR);
     sem_wait(&sMF_SR);
-    sem_pos(&sSR_SN);
+    sem_post(&sSR_SN);
     pthread_exit(NULL);
     return NULL;
 }
@@ -137,7 +137,7 @@ void* CB (void* arg) {
 void* SN (void* arg) {
     printf("Materia: Seguridad Nuclear\nCantidad previas: 2\nMaterias previas: Sistemas de Reactores, Proteccion Radiologica\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sSR_SN);
-    sem_pos(&sPR_SN);
+    sem_post(&sPR_SN);
     pthread_exit(NULL);
     return NULL;
 }
