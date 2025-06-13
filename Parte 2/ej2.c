@@ -7,6 +7,7 @@
 sem_t sM1_M2, sF1_FN, sF1_TD, sQG_TD, sQG_MIN, sM2_RR, sM2_FN, sM2_MF, sFN_RR, sFN_IN, sFN_PR, sFN_MIN, sRR_SR, sTD_MF, sMIN_PR, sMIN_CB, sPR_CB, sPR_IN, sPR_SN, sMF_SR, sSR_SN;
 
 void* M1 (void* arg) {
+    printf("Materia: Matematicas 1\nCantidad previas: 0\nMaterias previas: \n---------------------------------------------------------------------------------------\n");
     sem_post(&sM1_M2);
     return NULL;
 }
@@ -14,6 +15,7 @@ void* M1 (void* arg) {
 void* IN (void* arg) {
     sem_wait(&sFN_IN);
     sem_wait(&sPR_IN);
+    printf("Materia: Instrumentación Nuclear\nCantidad previas: 2\nMaterias previas: Protección Radiológica,Física Nuclear\n---------------------------------------------------------------------------------------\n");
     pthread_exit(NULL);
     return NULL;
 }
@@ -21,12 +23,14 @@ void* IN (void* arg) {
 
 void* F1 (void* arg) {
     //
+     printf("Materia: Fisica 1\nCantidad previas: 0\nMaterias previas: \n---------------------------------------------------------------------------------------\n");
     sem_post(&sF1_FN);
     sem_post(&sF1_TD);
     return NULL;
 }
 
 void* QG (void* arg) {
+     printf("Materia: Quimica General\nCantidad previas: 0\nMaterias previas: \n---------------------------------------------------------------------------------------\n");
     sem_pos(&sQG_TD);
     sem_pos(&sQG_MIN);
     pthread_exit(NULL);
@@ -35,6 +39,7 @@ void* QG (void* arg) {
 
 
 void* TD (void* arg) {
+     printf("Materia: Termodinamica\nCantidad previas: 2\nMaterias previas: Fisica 1, Quimica General\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sF1_TD);
     sem_wait(&sQG_TD);
     //
@@ -43,6 +48,7 @@ void* TD (void* arg) {
 }
 
 void* M2 (void* arg) {
+     printf("Materia: Matematicas 2\nCantidad previas: 1\nMaterias previas: Matematicas 1\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sM1_M2);
     sem_pos(&sM2_RR);
     sem_pos(&sM2_FN);
@@ -53,6 +59,7 @@ void* M2 (void* arg) {
 
 
 void* FN (void* arg) {
+     printf("Materia: Fisica Nuclear\nCantidad previas: 2\nMaterias previas: Matematicas 2, Fisica 1\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sM2_FN);
     sem_wait(&sF1_FN);
     //
@@ -64,6 +71,7 @@ void* FN (void* arg) {
 }
 
 void* MF (void* arg) {
+     printf("Materia: Mecanica de fluidos\nCantidad previas: 2\nMaterias previas: Matemáticas 2, Termodinámica\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sM2_MF);
     sem_wait(&sTD_MF);
     sem_pos(&sMF_SR);
@@ -73,14 +81,16 @@ void* MF (void* arg) {
 
 
 void* MIN (void* arg) {
+    printf("Materia: Materiales en Ingenieria Nuclear\nCantidad previas: 2\nMaterias previas: Quimica General, Fisica Nuclear\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sQG_MIN);
     sem_wait(&sFN_MIN);
     //
     sem_post(&sMIN_PR);
     sem_post(&sMIN_CB);
-    return NULL
+    return NULL;
 }
 void* RR (void* arg) {
+    printf("Materia: Reactividad de Reactores\nCantidad previas: 2\nMaterias previas: Quimica General, Fisica Nuclear\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sM2_RR);
     sem_wait(&sFN_RR);
     sem_pos(&sRR_SR);
