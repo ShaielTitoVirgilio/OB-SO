@@ -90,7 +90,7 @@ void* MIN (void* arg) {
     return NULL;
 }
 void* RR (void* arg) {
-    printf("Materia: Reactividad de Reactores\nCantidad previas: 2\nMaterias previas: Quimica General, Fisica Nuclear\n---------------------------------------------------------------------------------------\n");
+    printf("Materia: Reactividad de Reactores\nCantidad previas: 2\nMaterias previas: Matematicas 2, Fisica Nuclear\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sM2_RR);
     sem_wait(&sFN_RR);
     sem_pos(&sRR_SR);
@@ -99,6 +99,7 @@ void* RR (void* arg) {
 }
 
 void* PR (void* arg) {
+    printf("Materia: Proteccion Radiologica\nCantidad previas: 2\nMaterias previas: Materiales en Ingenieria Nuclear, Fisica Nuclear\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sFN_PR);
     sem_wait(&sMIN_PR);
     //
@@ -106,10 +107,11 @@ void* PR (void* arg) {
     sem_post(&sPR_IN);
     sem_post(&sPR_SN);
 
-    return NULL
+    return NULL;
 }
 
 void* SR (void* arg) {
+    printf("Materia: Sistemas de Reactores\nCantidad previas: 2\nMaterias previas: Mecanica de fluidos, Reactividad de Reactores\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sRR_SR);
     sem_wait(&sMF_SR);
     sem_pos(&sSR_SN);
@@ -120,10 +122,12 @@ void* SR (void* arg) {
 
 void* IIN (void* arg) {
     //NADA
+    printf("Materia: Introducción a la Ingenieria Nuclear\nCantidad previas: 0\nMaterias previas: \n---------------------------------------------------------------------------------------\n");
     return NULL;
 }
 
 void* CB (void* arg) {
+    printf("Materia: Calculo de Blindajes\nCantidad previas: 2\nMaterias previas: Materiales en Ingenieria Nuclear, Proteccion Radiologica\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sMIN_CB);
     sem_wait(&sPR_CB);
     pthread_exit(NULL);
@@ -131,6 +135,7 @@ void* CB (void* arg) {
 }
 
 void* SN (void* arg) {
+    printf("Materia: Seguridad Nuclear\nCantidad previas: 2\nMaterias previas: Sistemas de Reactores, Proteccion Radiologica\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sSR_SN);
     sem_pos(&sPR_SN);
     pthread_exit(NULL);
