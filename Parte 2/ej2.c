@@ -74,7 +74,7 @@ void* MF (void* arg) {
      printf("Materia: Mecanica de fluidos\nCantidad previas: 2\nMaterias previas: Matemáticas 2, Termodinámica\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sM2_MF);
     sem_wait(&sTD_MF);
-    sem_pos(&sMF_SR);
+    sem_post(&sMF_SR);
     pthread_exit(NULL);
     return NULL;
 }
