@@ -9,15 +9,13 @@ sem_t sM1_M2, sF1_FN, sF1_TD, sQG_TD, sQG_MIN, sM2_RR, sM2_FN, sM2_MF, sFN_RR, s
 void* M1 (void* arg) {
     printf("Materia: Matematicas 1\nCantidad previas: 0\nMaterias previas: \n---------------------------------------------------------------------------------------\n");
     sem_post(&sM1_M2);
-    return NULL;
 }
 
 void* IN (void* arg) {
     sem_wait(&sFN_IN);
     sem_wait(&sPR_IN);
-    printf("Materia: Instrumentación Nuclear\nCantidad previas: 2\nMaterias previas: Protección Radiológica,Física Nuclear\n---------------------------------------------------------------------------------------\n");
+    printf("Materia: Instrumentacion Nuclear\nCantidad previas: 2\nMaterias previas: Proteccion Radiologica,Fisica Nuclear\n---------------------------------------------------------------------------------------\n");
     pthread_exit(NULL);
-    return NULL;
 }
 
 
@@ -26,7 +24,6 @@ void* F1 (void* arg) {
      printf("Materia: Fisica 1\nCantidad previas: 0\nMaterias previas: \n---------------------------------------------------------------------------------------\n");
     sem_post(&sF1_FN);
     sem_post(&sF1_TD);
-    return NULL;
 }
 
 void* QG (void* arg) {
@@ -34,112 +31,100 @@ void* QG (void* arg) {
     sem_post(&sQG_TD);
     sem_post(&sQG_MIN);
     pthread_exit(NULL);
-    return NULL;
 }
 
 
 void* TD (void* arg) {
-     printf("Materia: Termodinamica\nCantidad previas: 2\nMaterias previas: Fisica 1, Quimica General\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sF1_TD);
     sem_wait(&sQG_TD);
+    printf("Materia: Termodinamica\nCantidad previas: 2\nMaterias previas: Fisica 1, Quimica General\n---------------------------------------------------------------------------------------\n");
     //
     sem_post(&sTD_MF);
-    return NULL;
 }
 
 void* M2 (void* arg) {
-     printf("Materia: Matematicas 2\nCantidad previas: 1\nMaterias previas: Matematicas 1\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sM1_M2);
+    printf("Materia: Matematicas 2\nCantidad previas: 1\nMaterias previas: Matematicas 1\n---------------------------------------------------------------------------------------\n");
     sem_post(&sM2_RR);
     sem_post(&sM2_FN);
     sem_post(&sM2_MF);
     pthread_exit(NULL);
-    return NULL;
 }
 
 
 void* FN (void* arg) {
-     printf("Materia: Fisica Nuclear\nCantidad previas: 2\nMaterias previas: Matematicas 2, Fisica 1\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sM2_FN);
     sem_wait(&sF1_FN);
+    printf("Materia: Fisica Nuclear\nCantidad previas: 2\nMaterias previas: Matematicas 2, Fisica 1\n---------------------------------------------------------------------------------------\n");
     //
     sem_post(&sFN_RR);
     sem_post(&sFN_IN);
     sem_post(&sFN_PR);
     sem_post(&sFN_MIN);
-    return NULL;
 }
 
 void* MF (void* arg) {
-     printf("Materia: Mecanica de fluidos\nCantidad previas: 2\nMaterias previas: Matemáticas 2, Termodinámica\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sM2_MF);
     sem_wait(&sTD_MF);
+    printf("Materia: Mecanica de fluidos\nCantidad previas: 2\nMaterias previas: Matematicas 2, Termodinamica\n---------------------------------------------------------------------------------------\n");
     sem_post(&sMF_SR);
     pthread_exit(NULL);
-    return NULL;
 }
 
 
 void* MIN (void* arg) {
-    printf("Materia: Materiales en Ingenieria Nuclear\nCantidad previas: 2\nMaterias previas: Quimica General, Fisica Nuclear\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sQG_MIN);
     sem_wait(&sFN_MIN);
+    printf("Materia: Materiales en Ingenieria Nuclear\nCantidad previas: 2\nMaterias previas: Quimica General, Fisica Nuclear\n---------------------------------------------------------------------------------------\n");
     //
     sem_post(&sMIN_PR);
     sem_post(&sMIN_CB);
-    return NULL;
 }
 void* RR (void* arg) {
-    printf("Materia: Reactividad de Reactores\nCantidad previas: 2\nMaterias previas: Matematicas 2, Fisica Nuclear\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sM2_RR);
     sem_wait(&sFN_RR);
+    printf("Materia: Reactividad de Reactores\nCantidad previas: 2\nMaterias previas: Matematicas 2, Fisica Nuclear\n---------------------------------------------------------------------------------------\n");
     sem_post(&sRR_SR);
     pthread_exit(NULL);
-    return NULL;
 }
 
 void* PR (void* arg) {
-    printf("Materia: Proteccion Radiologica\nCantidad previas: 2\nMaterias previas: Materiales en Ingenieria Nuclear, Fisica Nuclear\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sFN_PR);
     sem_wait(&sMIN_PR);
-    //
+    printf("Materia: Proteccion Radiologica\nCantidad previas: 2\nMaterias previas: Materiales en Ingenieria Nuclear, Fisica Nuclear\n---------------------------------------------------------------------------------------\n");
     sem_post(&sPR_CB);
     sem_post(&sPR_IN);
     sem_post(&sPR_SN);
 
-    return NULL;
 }
 
 void* SR (void* arg) {
-    printf("Materia: Sistemas de Reactores\nCantidad previas: 2\nMaterias previas: Mecanica de fluidos, Reactividad de Reactores\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sRR_SR);
     sem_wait(&sMF_SR);
+        printf("Materia: Sistemas de Reactores\nCantidad previas: 2\nMaterias previas: Mecanica de fluidos, Reactividad de Reactores\n---------------------------------------------------------------------------------------\n");
     sem_post(&sSR_SN);
     pthread_exit(NULL);
-    return NULL;
 }
 
 
 void* IIN (void* arg) {
     //NADA
-    printf("Materia: Introducción a la Ingenieria Nuclear\nCantidad previas: 0\nMaterias previas: \n---------------------------------------------------------------------------------------\n");
-    return NULL;
+    printf("Materia: Introduccion a la Ingenieria Nuclear\nCantidad previas: 0\nMaterias previas: \n---------------------------------------------------------------------------------------\n");
 }
 
 void* CB (void* arg) {
-    printf("Materia: Calculo de Blindajes\nCantidad previas: 2\nMaterias previas: Materiales en Ingenieria Nuclear, Proteccion Radiologica\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sMIN_CB);
     sem_wait(&sPR_CB);
+        printf("Materia: Calculo de Blindajes\nCantidad previas: 2\nMaterias previas: Materiales en Ingenieria Nuclear, Proteccion Radiologica\n---------------------------------------------------------------------------------------\n");
+
     pthread_exit(NULL);
-    return NULL;
 }
 
 void* SN (void* arg) {
-    printf("Materia: Seguridad Nuclear\nCantidad previas: 2\nMaterias previas: Sistemas de Reactores, Proteccion Radiologica\n---------------------------------------------------------------------------------------\n");
     sem_wait(&sSR_SN);
+        printf("Materia: Seguridad Nuclear\nCantidad previas: 2\nMaterias previas: Sistemas de Reactores, Proteccion Radiologica\n---------------------------------------------------------------------------------------\n");
     sem_post(&sPR_SN);
     pthread_exit(NULL);
-    return NULL;
 }
 
 
@@ -165,11 +150,11 @@ int main() {
     sem_init(&sPR_IN, 0, 0);
     sem_init(&sPR_SN, 0, 0);
     sem_init(&sMF_SR, 0, 0);
-    sem_init(&sSR_SN, 0, 1); // Initial value for SR_SN is set to allow SN to run first
+    sem_init(&sSR_SN, 0, 0); 
 
     pthread_t  tM1, tIN, tF1, tQG, tTD, tM2, tFN, tMF, tMIN, tRR, tPR, tSR, tIIN, tCB, tSN;
-    pthread_attr_t attr;//Declara una variable llamada attr de tipo pthread_attr_t, que representa los atributos de un hilo en la biblioteca pthread. Esta estructura permite configurar ciertas características de los hilos, como si serán desvinculados (detached) o no, el tamaño de su pila de ejecución, entre otras.
-    pthread_attr_init(&attr);//Esta función inicializa attr con valores por defecto. Los valores predeterminados son: 1-Los hilos estarán en estado no-desvinculado, lo cual significa que podrás usar pthread_join() para esperar a que el hilo termine. 2- Se usa el tamaño de pila por defecto del sistem
+    pthread_attr_t attr; 
+    pthread_attr_init(&attr);
 
     pthread_create(&tM1, &attr, M1, NULL);
     pthread_create(&tIN, &attr, IN, NULL);
