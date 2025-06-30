@@ -1,18 +1,17 @@
-
-with Ada.Text_IO; use Ada.Text_IO;  --Lo usamos para leer y escribir en consola
-with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;  --Para manejar enteros
-with Ada.Numerics.Float_Random;   --Para manejar decimales
+with Ada.Text_IO; use Ada.Text_IO;  -- Para leer y escribir en consola
+with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;  -- Para manejar enteros
+with Ada.Numerics.Discrete_Random;  -- Para números aleatorios enteros
 
 procedure Main is
-   --Definimos las constantes
+   -- Definimos las constantes
    MaxCola      : constant Integer := 10;
    NumCajas     : constant Integer := 4;
    TotalClientes : Integer;
 
-   -- Para el tiempo aleatorio de las cajas
-   package Rand is new Ada.Numerics.Float_Random;
-   Gen : Rand.Generator;
-
+   -- Para el tiempo aleatorio de las cajas (0 a 5000 ms)
+   subtype Rango is Integer range 0 .. 5000;
+   package Rand_Int is new Ada.Numerics.Discrete_Random(Rango);
+   Gen : Rand_Int.Generator;
 
    task Cola is
       entry Entrar(ID : Integer);
@@ -26,12 +25,11 @@ procedure Main is
       EnEspera: Integer := 0;
    begin
       loop
-      --Hacemos un loop, donde de ser posible agregamos en la cola,si no, tambien de ser posible Pasamos de la cola de espera a una caja
          select
             when EnEspera < MaxCola =>
                accept Entrar(ID : Integer) do
-                  Ultimo := (Ultimo mod MaxCola) + 1; --Marcamos ultima pos del array registrada
-                  EnCola(Ultimo) := ID; --Guardamos el ultimo
+                  Ultimo := (Ultimo mod MaxCola) + 1;
+                  EnCola(Ultimo) := ID;
                   EnEspera := EnEspera + 1;
                   Put_Line("Usuario" & Integer'Image(ID) & " entra a la cola de espera.");
                end;
@@ -47,29 +45,30 @@ procedure Main is
       end loop;
    end Cola;
 
+   task Generador;
 
-task Generador;
+   task body Generador is
+      ID : Integer := 0;
+      Esperados : Integer;
+   begin
+      Put("Ingrese la cantidad de personas a crear: ");
+      Get(Esperados);
 
-task body Generador is
-   ID : Integer := 0;
-   Esperados : Integer;
-begin
-   Put("Ingrese la cantidad de personas a crear: ");
-   Get(Esperados);
+      while ID < Esperados loop
+         ID := ID + 1;
+         loop
+            select
+               Cola.Entrar(ID);
+               exit;
+            else
+               delay 3.0;
+               ID := ID - 1;  -- Reintentar con mismo ID
+            end select;
+         end loop;
 
-   while ID < Esperados loop
-      ID := ID + 1;
-      select
-         Cola.Entrar(ID);
-      or
-         delay 3.0;
-         ID := ID - 1; -- Si no puede entrar, reintenta
-      end select;
-
-      delay 1.0;  -- Una persona por segundo
-   end loop;
-end Generador;
-
+         delay 1.0;  -- Una persona por segundo
+      end loop;
+   end Generador;
 
    task type Caja(ID : Integer);
 
@@ -82,7 +81,8 @@ end Generador;
          Put_Line("Persona" & Integer'Image(ClienteID) & " ingresó a la caja" & Integer'Image(ID));
 
          declare
-            Tiempo : Duration := Duration(Rand.Random(Gen) * 5.0);
+            R : Integer := Rand_Int.Random(Gen);
+            Tiempo : Duration := Duration(Float(R) / 1000.0);
          begin
             delay Tiempo;
          end;
@@ -91,14 +91,12 @@ end Generador;
       end loop;
    end Caja;
 
-
    C1 : Caja(1);
    C2 : Caja(2);
    C3 : Caja(3);
    C4 : Caja(4);
 
 begin
-   Rand.Reset(Gen);
-   null; 
+   Rand_Int.Reset(Gen);
+   null;
 end Main;
-

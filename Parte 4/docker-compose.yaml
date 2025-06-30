@@ -1,0 +1,40 @@
+services:
+  maquina1:
+    build: ./maquina
+    container_name: maquina1
+    volumes:
+      - ./data/maquina1:/home/users/documentos
+  maquina2:
+    build: ./maquina
+    container_name: maquina2
+    volumes:
+      - ./data/maquina2:/home/users/documentos
+  maquina3:
+    build: ./maquina
+    container_name: maquina3
+    volumes:
+      - ./data/maquina3:/home/users/documentos
+
+  backup:
+    build: ./backup
+    container_name: backup
+    volumes:
+      - ./data/maquina1:/home/maquina1
+      - ./data/maquina2:/home/maquina2
+      - ./data/maquina3:/home/maquina3
+      - ./backup_data:/home/backup_data
+    depends_on:
+      - maquina1
+      - maquina2
+      - maquina3
+
+  explorador:
+    build: ./explorador
+    container_name: explorador
+    volumes:
+      - ./backup_data:/home/backup_data
+      - ./alertas_detectadas:/home/alertas_detectadas
+    ports:
+      - "8080:80"
+    depends_on:
+      - backup
