@@ -1,16 +1,16 @@
 services:
   maquina1:
-    build: ./maquina
+    build: ./maquina1
     container_name: maquina1
     volumes:
       - ./data/maquina1:/home/users/documentos
   maquina2:
-    build: ./maquina
+    build: ./maquina2
     container_name: maquina2
     volumes:
       - ./data/maquina2:/home/users/documentos
   maquina3:
-    build: ./maquina
+    build: ./maquina3
     container_name: maquina3
     volumes:
       - ./data/maquina3:/home/users/documentos

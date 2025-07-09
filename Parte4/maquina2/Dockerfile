@@ -10,3 +10,6 @@ RUN mkdir -p /home/users/documentos
 
 # Establecer el directorio de trabajo
 WORKDIR /home/users/documentos
+
+# Comando para mantener el contenedor corriendo
+CMD ["tail", "-f", "/dev/null"]

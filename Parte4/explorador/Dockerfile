@@ -17,4 +17,8 @@ RUN mkdir -p /home/alertas_detectadas
 
 # Copiar index.html a apache
 RUN mkdir -p /var/www/html
-CMD bash -c "/usr/local/bin/explorador.sh & /usr/local/bin/verpagina.sh && apache2ctl -D FOREGROUND"
+
+# Comando que ejecuta ambos scripts en paralelo y apache
+CMD bash -c "/usr/local/bin/verpagina.sh && /usr/local/bin/explorador.sh & while true; do sleep 30; /usr/local/bin/verpagina.sh; done &" && apache2ctl -D FOREGROUND
+
+EXPOSE 80
