@@ -46,7 +46,7 @@ while true; do
                     
                     # Si el archivo contiene la palabra "Alarma" (insensible a mayúsculas/minúsculas)
                     if grep -qi "Alarma" "$file" 2>/dev/null; then
-                        echo "$(date): ¡¡¡ ALERTA DETECTADA en: $file !!!"
+                        echo "$(date): alarma encontrada en: $file"
                         
                         # Obtener hora y fecha local
                         current_datetime=$(date +"%Y-%m-%d %H:%M:%S")
@@ -75,6 +75,6 @@ while true; do
         fi
     done
     
-    echo "$(date): Monitoreo completado. Esperando $SLEEP_INTERVAL segundos para la próxima revisión..."
+    echo "$(date): Monitoreo completado. Esperando $SLEEP_INTERVAL segundos para la próxima revisión"
     sleep "$SLEEP_INTERVAL"
 done

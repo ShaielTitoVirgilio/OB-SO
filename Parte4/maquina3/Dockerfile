@@ -12,4 +12,4 @@ RUN mkdir -p /home/users/documentos
 WORKDIR /home/users/documentos
 
 # Comando para mantener el contenedor corriendo
-CMD ["tail", "-f", "/dev/null"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]

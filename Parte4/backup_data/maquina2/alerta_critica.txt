@@ -1,3 +1,1 @@
-Alarma! Se ha detectado un problema crítico en el sistema.
-La temperatura del servidor está muy alta.
-Es necesaria una intervención inmediata.
+Alarma!asdasdasdasdasdasd Alarma

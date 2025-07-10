@@ -1,3 +1,4 @@
 Este es un documento normal de la maquina uno.
 Contiene información importante para la empresa.
 No hay nada especial aquí.
+Alarma
